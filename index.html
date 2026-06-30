@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Digital Planner</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ============================================================
+       VIEW: LOGIN
+  ============================================================ -->
+  <div id="view-login" class="view active">
+    <div class="auth-card">
+      <div class="auth-brand">📅 Digital Planner</div>
+      <h2>Welcome Back</h2>
+      <div class="form-group">
+        <input type="email" id="login-email" class="input-field" placeholder="Email address" />
+      </div>
+      <div class="form-group">
+        <input type="password" id="login-password" class="input-field" placeholder="Password" />
+      </div>
+      <div id="login-error" class="error-msg hidden"></div>
+      <button class="btn btn-primary" onclick="App.login()">Sign In</button>
+      <div class="auth-links">
+        <a href="#" onclick="App.showView('view-forgot-pw')">Forgot password?</a>
+        <span>·</span>
+        <a href="#" onclick="App.showView('view-forgot-username')">Forgot username?</a>
+      </div>
+      <div class="auth-footer">
+        No account? <a href="#" onclick="App.showView('view-register')">Create one</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       VIEW: REGISTER
+  ============================================================ -->
+  <div id="view-register" class="view">
+    <div class="auth-card">
+      <div class="auth-brand">📅 Digital Planner</div>
+      <h2>Create Account</h2>
+      <div class="form-group">
+        <input type="email" id="reg-email" class="input-field" placeholder="Email address" />
+      </div>
+      <div class="form-group">
+        <input type="password" id="reg-password" class="input-field" placeholder="Password" />
+      </div>
+      <div class="form-group">
+        <input type="password" id="reg-confirm" class="input-field" placeholder="Confirm password" />
+      </div>
+      <div id="reg-error" class="error-msg hidden"></div>
+      <button class="btn btn-primary" onclick="App.register()">Register</button>
+      <div class="auth-footer">
+        Already have an account? <a href="#" onclick="App.showView('view-login')">Sign in</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       VIEW: FORGOT PASSWORD
+  ============================================================ -->
+  <div id="view-forgot-pw" class="view">
+    <div class="auth-card">
+      <div class="auth-brand">📅 Digital Planner</div>
+      <h2>Reset Password</h2>
+      <p class="auth-subtitle">Enter your registered email and we'll send a reset link.</p>
+      <div class="form-group">
+        <input type="email" id="forgot-pw-email" class="input-field" placeholder="Email address" />
+      </div>
+      <button class="btn btn-primary" onclick="App.forgotPassword()">Send Reset Link</button>
+      <div class="auth-footer">
+        <a href="#" onclick="App.showView('view-login')">← Back to login</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       VIEW: FORGOT USERNAME
+  ============================================================ -->
+  <div id="view-forgot-username" class="view">
+    <div class="auth-card">
+      <div class="auth-brand">📅 Digital Planner</div>
+      <h2>Recover Username</h2>
+      <p class="auth-subtitle">Enter your registered email and we'll send your username.</p>
+      <div class="form-group">
+        <input type="email" id="forgot-user-email" class="input-field" placeholder="Email address" />
+      </div>
+      <button class="btn btn-primary" onclick="App.forgotUsername()">Send Username</button>
+      <div class="auth-footer">
+        <a href="#" onclick="App.showView('view-login')">← Back to login</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       VIEW: HOME / CALENDAR
+  ============================================================ -->
+  <div id="view-home" class="view">
+
+    <!-- Sidebar toggle -->
+    <button class="sidebar-toggle" id="sidebarToggle" onclick="App.toggleSidebar()">&#9776;</button>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebarMenu">
+      <div class="sidebar-header">Menu</div>
+      <button onclick="App.signOut()">🚪 Sign Out</button>
+    </nav>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="App.toggleSidebar()"></div>
+
+    <!-- Welcome -->
+    <h1 id="welcomeMessage" class="welcome-msg"></h1>
+
+    <!-- Main layout -->
+    <div class="calendar-container">
+
+      <!-- Calendar section -->
+      <div class="calendar-section">
+        <div class="calendar-header">
+          <button id="prevMonthBtn" class="arrow-btn" onclick="Calendar.prevMonth()">&#8249;</button>
+          <h2 id="monthYear"></h2>
+          <button id="nextMonthBtn" class="arrow-btn" onclick="Calendar.nextMonth()">&#8250;</button>
+        </div>
+        <div class="calendar-wrapper">
+          <div class="calendar-slide" id="calendarSlide">
+            <div class="calendar" id="calendar"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Task list section -->
+      <div class="task-section">
+        <h3 id="taskHeader">Tasks for This Month</h3>
+        <ul id="monthlyTasks"></ul>
+      </div>
+    </div>
+
+    <!-- Task Modal -->
+    <div class="modal" id="taskModal" onclick="Calendar.closeModalOnOverlay(event)">
+      <div class="modal-content">
+        <h3 id="selectedDateLabel"></h3>
+        <textarea id="taskInput" placeholder="Enter your task..."></textarea>
+        <button class="btn btn-secondary" id="setDueDateBtn" onclick="Calendar.showDueDate()">Set Due Date</button>
+        <input type="date" id="dueDateInput" />
+        <div class="modal-actions">
+          <button class="btn btn-primary" id="saveTaskBtn" onclick="Calendar.saveTask()">Save Task</button>
+          <button class="btn btn-dark" id="cancelTaskBtn" onclick="Calendar.closeModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /view-home -->
+
+  <script src="app.js"></script>
+</body>
+</html>
