@@ -1,0 +1,479 @@
+/* ============================================================
+CSS VARIABLES & RESET
+============================================================ */
+:root {
+  --green:        #4CAF50;
+  --green-dark:   #388E3C;
+  --green-light:  #e8f5e9;
+  --dark:         #333;
+  --mid:          #555;
+  --light-bg:     #f0f2f5;
+  --card-bg:      #fff;
+  --border:       #ccc;
+  --error:        #e53935;
+  --orange:       orangered;
+  --radius-sm:    6px;
+  --radius-md:    10px;
+  --radius-lg:    14px;
+  --shadow-sm:    0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md:    0 4px 15px rgba(0,0,0,0.15);
+  --transition:   0.25s ease;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--light-bg);
+  color: var(--dark);
+  min-height: 100vh;
+}
+
+a { color: var(--green); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ============================================================
+   VIEW SYSTEM  (only .active is visible)
+============================================================ */
+.view {
+  display: none;
+  min-height: 100vh;
+}
+.view.active {
+  display: flex;         /* auth views use flex-center */
+}
+
+/* Auth views center their card */
+#view-login,
+#view-register,
+#view-forgot-pw,
+#view-forgot-username {
+  justify-content: center;
+  align-items: center;
+}
+
+/* Home view stacks vertically */
+#view-home {
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding-bottom: 40px;
+  /* Slide-in on show */
+  opacity: 0;
+  transform: translateY(60px);
+  transition: opacity 0.5s ease, transform 0.6s ease;
+}
+#view-home.slide-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   AUTH CARD
+============================================================ */
+.auth-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 32px 28px;
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.auth-brand {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--green);
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.auth-card h2 {
+  text-align: center;
+  font-size: 1.4rem;
+  color: var(--dark);
+}
+
+.auth-subtitle {
+  font-size: 0.875rem;
+  color: var(--mid);
+  text-align: center;
+}
+
+.form-group { display: flex; flex-direction: column; }
+
+.input-field {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  transition: border-color var(--transition), background var(--transition);
+}
+.input-field:focus {
+  outline: none;
+  border-color: var(--green);
+  background: var(--green-light);
+}
+
+.error-msg {
+  color: var(--error);
+  font-size: 0.85rem;
+  text-align: center;
+}
+.hidden { display: none !important; }
+
+.auth-links {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--mid);
+}
+
+.auth-footer {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--mid);
+  margin-top: 4px;
+}
+
+/* ============================================================
+   BUTTONS
+============================================================ */
+.btn {
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background var(--transition), opacity var(--transition);
+}
+.btn-primary  { background: var(--green);  color: #fff; }
+.btn-primary:hover  { background: var(--green-dark); }
+.btn-secondary { background: #524d4d; color: #fff; }
+.btn-secondary:hover { background: #3a3636; }
+.btn-dark  { background: #524d4d; color: #fff; }
+.btn-dark:hover { background: #3a3636; }
+
+/* ============================================================
+   SIDEBAR
+============================================================ */
+.sidebar-toggle {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  padding: 10px 12px;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 1000;
+  transition: left var(--transition);
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -220px;
+  height: 100%;
+  width: 200px;
+  background: var(--dark);
+  color: #fff;
+  padding: 28px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: left 0.3s ease;
+  z-index: 999;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.sidebar.open { left: 0; }
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 998;
+}
+.sidebar-overlay.visible { display: block; }
+
+.sidebar-header {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.sidebar button {
+  background: none;
+  color: #fff;
+  border: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-align: left;
+  padding: 4px 0;
+  width: 100%;
+  transition: color var(--transition);
+}
+.sidebar button:hover { color: var(--green); text-decoration: none; }
+
+/* ============================================================
+   WELCOME MESSAGE
+============================================================ */
+.welcome-msg {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--dark);
+  text-align: center;
+  margin: 28px 0 16px;
+  width: 100%;
+}
+
+/* ============================================================
+   CALENDAR LAYOUT
+============================================================ */
+.calendar-container {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 20px;
+}
+
+.calendar-section {
+  flex: 2;
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 20px;
+}
+
+.task-section {
+  flex: 1;
+  background: var(--mid);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 16px;
+  max-height: 600px;
+  overflow-y: auto;
+  color: #fff;
+}
+.task-section h3 { margin-bottom: 10px; font-size: 1rem; }
+
+#monthlyTasks {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#monthlyTasks li {
+  padding: 8px 10px;
+  background: #444;
+  border-left: 4px solid var(--green);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+/* ============================================================
+   CALENDAR HEADER
+============================================================ */
+.calendar-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.arrow-btn {
+  background: #ddd;
+  border: none;
+  padding: 6px 14px;
+  font-size: 1.2rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+.arrow-btn:hover { background: #bbb; }
+
+/* ============================================================
+   CALENDAR GRID
+============================================================ */
+.calendar-wrapper { overflow: hidden; }
+
+.calendar-slide {
+  display: flex;
+  width: 100%;
+  transition: transform 0.4s ease;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  width: 100%;
+  min-width: 100%;
+}
+
+.day {
+  font-weight: bold;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--mid);
+  padding: 4px 0;
+}
+
+.date-cell {
+  position: relative;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: inset 0 0 2px rgba(0,0,0,0.08);
+  height: 72px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9rem;
+  overflow: hidden;
+  flex-direction: column;
+}
+
+/* Action icons inside cells */
+.plus-icon,
+.edit-icon,
+.trashcan-icon {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  font-size: 16px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 50%;
+  color: #fff;
+  transition: opacity var(--transition);
+}
+
+.plus-icon {
+  bottom: 4px;
+  left: 4px;
+  background: #524d4d;
+  font-size: 18px;
+}
+.edit-icon {
+  bottom: 4px;
+  right: 28px;
+  background: #524d4d;
+  font-size: 13px;
+}
+.trashcan-icon {
+  bottom: 4px;
+  right: 4px;
+  background: var(--orange);
+  font-size: 16px;
+}
+
+.date-cell:hover .plus-icon,
+.date-cell:hover .edit-icon,
+.date-cell:hover .trashcan-icon { display: flex; }
+
+.task-indicator {
+  width: 8px;
+  height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+
+/* ============================================================
+   MODAL
+============================================================ */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+.modal.open { display: flex; }
+
+.modal-content {
+  background: var(--card-bg);
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-content h3 { font-size: 1rem; color: var(--dark); }
+
+.modal-content textarea {
+  width: 100%;
+  height: 80px;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+  background: #f1f1f1;
+  resize: none;
+  transition: background var(--transition), border-color var(--transition);
+}
+.modal-content textarea:focus {
+  background: var(--green-light);
+  border-color: var(--green);
+  outline: none;
+}
+
+#dueDateInput {
+  width: 100%;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  background: #f1f1f1;
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+  display: none;
+  transition: background var(--transition), border-color var(--transition);
+}
+#dueDateInput:focus {
+  background: var(--green-light);
+  border-color: var(--green);
+  outline: none;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 768px) {
+  .calendar-container { flex-direction: column; padding: 0 12px; }
+  .task-section { max-height: 300px; }
+  .date-cell { height: 52px; font-size: 0.8rem; }
+}
